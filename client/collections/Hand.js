@@ -20,10 +20,14 @@ window.Hand = (function(_super) {
 
   Hand.prototype.hit = function() {
     this.add(this.deck.pop()).last();
-    if (this.scores()[0] > 21) {
-      this.trigger('bust', this);
+    if (this.scores()[0] === 21) {
+      return this.trigger('blackjack');
+    } else {
+      if (this.scores()[0] > 21) {
+        this.trigger('bust', this);
+      }
+      return this.play();
     }
-    return this.play();
   };
 
   Hand.prototype.stand = function() {

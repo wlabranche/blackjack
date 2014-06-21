@@ -32,6 +32,11 @@ window.App = (function(_super) {
         return _this.trigger('win');
       };
     })(this));
+    player.on('blackjack', (function(_this) {
+      return function() {
+        return _this.trigger('blackjack');
+      };
+    })(this));
     return dealer.on('stand', (function(_this) {
       return function() {
         var dTotal, pTotal;

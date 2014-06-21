@@ -28,8 +28,11 @@ window.AppView = (function(_super) {
     this.model.on('lose', function() {
       return console.log('failure');
     });
-    return this.model.on('push', function() {
+    this.model.on('push', function() {
       return console.log('push');
+    });
+    return this.model.on('blackjack', function() {
+      return console.log('test');
     });
   };
 

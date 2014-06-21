@@ -5,17 +5,17 @@ class window.App extends Backbone.Model
     @set 'playerHand', deck.dealPlayer()
     @set 'dealerHand', deck.dealDealer()
 
-    # way to not use parens?
     player = @get 'playerHand'
     dealer = @get 'dealerHand'
 
-    player.on 'bust', => @trigger 'lose'
 
+    player.on 'bust', => @trigger 'lose' # or 'win:dealer'
     player.on 'stand', =>
       dealer.at(0).flip()
       do dealer.play
 
-    dealer.on 'bust', => @trigger 'win'
+    dealer.on 'bust', => @trigger 'win' # or win:player
+    player.on 'blackjack', => @trigger 'blackjack'
 
     dealer.on 'stand', =>
       pTotal = player.scores()[0]

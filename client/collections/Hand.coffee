@@ -6,12 +6,15 @@ class window.Hand extends Backbone.Collection
 
   hit: ->
     @add(@deck.pop()).last()
-    if @scores()[0] > 21
-      @trigger 'bust', @
-    do @play
+    if @scores()[0] == 21
+      @trigger 'blackjack'
+    else
+      if @scores()[0] > 21
+        @trigger 'bust', @
+      do @play
 
   stand: =>
-    @trigger 'stand'
+    @trigger 'stand' # minimizes dependencies
 
   play: ->
     if @isDealer and @scores()[0] <= 21
