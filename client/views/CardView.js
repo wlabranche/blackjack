@@ -11,7 +11,11 @@ window.CardView = (function(_super) {
 
   CardView.prototype.className = 'card';
 
+  CardView.prototype.style = 'backgroung-image: url(<%= rankName %>-<%= suitName %>.png)';
+
   CardView.prototype.template = _.template('<%= rankName %> of <%= suitName %>');
+
+  CardView.prototype.test = _.template("url('../img/cards/<%= rankName %>-<%= suitName %>.png')");
 
   CardView.prototype.initialize = function() {
     this.model.on('change', (function(_this) {
@@ -24,9 +28,9 @@ window.CardView = (function(_super) {
 
   CardView.prototype.render = function() {
     this.$el.children().detach().end().html;
-    this.$el.html(this.template(this.model.attributes));
+    this.$el.css('background-image', "url(\"img/cards/" + this.model.attributes.rankName + "-" + this.model.attributes.suitName + ".png\")");
     if (!this.model.get('revealed')) {
-      return this.$el.addClass('covered');
+      return this.$el.css('background-image', "url(\"img/card-back.png\")");
     }
   };
 

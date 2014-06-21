@@ -1,5 +1,3 @@
-#todo: refactor to have a game beneath the outer blackjack model
-# this is done I think
 class window.App extends Backbone.Model
 
   initialize: ->
@@ -12,7 +10,6 @@ class window.App extends Backbone.Model
     dealer = @get 'dealerHand'
 
     player.on 'bust', => @trigger 'lose'
-    player.on 'win', => @trigger 'win'
 
     player.on 'stand', =>
       dealer.at(0).flip()
@@ -21,8 +18,8 @@ class window.App extends Backbone.Model
     dealer.on 'bust', => @trigger 'win'
 
     dealer.on 'stand', =>
-      pTotal = player.highest();
-      dTotal = dealer.highest();
+      pTotal = player.scores()[0]
+      dTotal = dealer.scores()[0]
       if dTotal > pTotal
         @trigger 'lose'
       else if pTotal > dTotal

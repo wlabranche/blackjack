@@ -26,7 +26,7 @@ window.AppView = (function(_super) {
       return console.log('win');
     });
     this.model.on('lose', function() {
-      return console.log('lose');
+      return console.log('failure');
     });
     return this.model.on('push', function() {
       return console.log('push');

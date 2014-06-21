@@ -20,9 +20,7 @@ window.Hand = (function(_super) {
 
   Hand.prototype.hit = function() {
     this.add(this.deck.pop()).last();
-    if (this.scores()[0] === 21) {
-      this.trigger('win', this);
-    } else if (this.scores()[0] > 21) {
+    if (this.scores()[0] > 21) {
       this.trigger('bust', this);
     }
     return this.play();
@@ -33,12 +31,18 @@ window.Hand = (function(_super) {
   };
 
   Hand.prototype.play = function() {
-    if (this.isDealer) {
-      if (this.scores()[0] < 17 || this.scores()[1] < 17) {
+    if (this.isDealer && this.scores()[0] <= 21) {
+      if (this.scores()[0] < 17) {
         return this.hit();
       } else {
         return this.stand();
       }
+    }
+  };
+
+  Hand.prototype.blackJack = function() {
+    if (this.scores[0]() === 21) {
+      return this.trigger('blackjack', this);
     }
   };
 
@@ -50,24 +54,27 @@ window.Hand = (function(_super) {
     score = this.reduce(function(score, card) {
       return score + (card.get('revealed') ? card.get('value') : 0);
     }, 0);
-    if (hasAce) {
-      return [score, score + 10];
+    if (hasAce && ((score + 10) <= 21)) {
+      return [score + 10];
     } else {
       return [score];
     }
   };
 
-  Hand.prototype.highest = function() {
-    if (this.scores().length === 1) {
-      return this.scores()[0];
-    } else {
-      if (this.scores()[0] > this.scores()[1]) {
-        return this.scores()[0];
-      } else {
-        return this.scores()[1];
-      }
-    }
-  };
+
+  /*
+  scores: ->
+     * The scores are an array of potential scores.
+     * Usually, that array contains one element. That is the only score.
+     * when there is an ace, it offers you two scores - the original score, and score + 10.
+    hasAce = @reduce (memo, card) ->
+      memo or card.get('value') is 1
+    , false
+    score = @reduce (score, card) ->
+      score + if card.get 'revealed' then card.get 'value' else 0
+    , 0
+    if hasAce then [score, score + 10] else [score]
+   */
 
   return Hand;
 
