@@ -1,13 +1,8 @@
 class window.CardView extends Backbone.View
 
   className: 'card'
-  style: 'backgroung-image: url(<%= rankName %>-<%= suitName %>.png)'
-  # check handView for this //'<%= rankName %> of <%= suitName %>' #
-  # console.log(@model);
-  # card: @model.get 'rankName' #.get(rankName).toLowerCase() + '-' + suitName.toLowerCase() + '.png'
-  # '<div class="card" style="background-image: url(../img/cards/' + card + '"></div>' 
+    
   template: _.template '<%= rankName %> of <%= suitName %>'
-  test: _.template "url('../img/cards/<%= rankName %>-<%= suitName %>.png')"
 
   initialize: ->
     @model.on 'change', => @render

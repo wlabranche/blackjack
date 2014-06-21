@@ -11,11 +11,7 @@ window.CardView = (function(_super) {
 
   CardView.prototype.className = 'card';
 
-  CardView.prototype.style = 'backgroung-image: url(<%= rankName %>-<%= suitName %>.png)';
-
   CardView.prototype.template = _.template('<%= rankName %> of <%= suitName %>');
-
-  CardView.prototype.test = _.template("url('../img/cards/<%= rankName %>-<%= suitName %>.png')");
 
   CardView.prototype.initialize = function() {
     this.model.on('change', (function(_this) {

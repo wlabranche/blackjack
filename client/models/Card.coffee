@@ -1,6 +1,5 @@
 class window.Card extends Backbone.Model
 
-  #set the cards value
   initialize: (params) ->
     @set
       revealed: true
@@ -13,8 +12,6 @@ class window.Card extends Backbone.Model
         when 12 then 'queen'
         else params.rank
   
-  #flip the card, on really matters to the dealer 
   flip: ->
     @set 'revealed', !@get 'revealed'
     @
-#seems complete, all cards can do/need to do is have a value and flip;
