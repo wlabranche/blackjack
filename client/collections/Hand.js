@@ -20,16 +20,26 @@ window.Hand = (function(_super) {
 
   Hand.prototype.hit = function() {
     this.add(this.deck.pop()).last();
-    if (this.scores() > 21) {
-      this.trigger('bust');
+    if (this.scores()[0] === 21) {
+      this.trigger('win', this);
+    } else if (this.scores()[0] > 21) {
+      this.trigger('bust', this);
     }
-    if (this.scores() === 21) {
-      return this.trigger('win');
-    }
+    return this.play();
   };
 
   Hand.prototype.stand = function() {
     return this.trigger('stand');
+  };
+
+  Hand.prototype.play = function() {
+    if (this.isDealer) {
+      if (this.scores()[0] < 17 || this.scores()[1] < 17) {
+        return this.hit();
+      } else {
+        return this.stand();
+      }
+    }
   };
 
   Hand.prototype.scores = function() {
@@ -44,6 +54,18 @@ window.Hand = (function(_super) {
       return [score, score + 10];
     } else {
       return [score];
+    }
+  };
+
+  Hand.prototype.highest = function() {
+    if (this.scores().length === 1) {
+      return this.scores()[0];
+    } else {
+      if (this.scores()[0] > this.scores()[1]) {
+        return this.scores()[0];
+      } else {
+        return this.scores()[1];
+      }
     }
   };
 

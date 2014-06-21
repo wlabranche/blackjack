@@ -10,22 +10,45 @@ window.App = (function(_super) {
   }
 
   App.prototype.initialize = function() {
-    var deck, player;
+    var dealer, deck, player;
     this.set('deck', deck = new Deck());
     this.set('playerHand', deck.dealPlayer());
     this.set('dealerHand', deck.dealDealer());
     player = this.get('playerHand');
-    player.on('stand', function() {
-      return this.trigeer('stand');
-    });
+    dealer = this.get('dealerHand');
     player.on('bust', (function(_this) {
       return function() {
         return _this.trigger('lose');
       };
     })(this));
-    return player.on('win', (function(_this) {
+    player.on('win', (function(_this) {
       return function() {
         return _this.trigger('win');
+      };
+    })(this));
+    player.on('stand', (function(_this) {
+      return function() {
+        dealer.at(0).flip();
+        return dealer.play();
+      };
+    })(this));
+    dealer.on('bust', (function(_this) {
+      return function() {
+        return _this.trigger('win');
+      };
+    })(this));
+    return dealer.on('stand', (function(_this) {
+      return function() {
+        var dTotal, pTotal;
+        pTotal = player.highest();
+        dTotal = dealer.highest();
+        if (dTotal > pTotal) {
+          return _this.trigger('lose');
+        } else if (pTotal > dTotal) {
+          return _this.trigger('win');
+        } else {
+          return _this.trigger('push');
+        }
       };
     })(this));
   };

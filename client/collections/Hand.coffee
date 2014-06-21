@@ -1,18 +1,26 @@
 class window.Hand extends Backbone.Collection
-
+# some buggy logic here
   model: Card
 
   initialize: (array, @deck, @isDealer) ->
 
   hit: ->
     @add(@deck.pop()).last()
-    if do @scores > 21
-      @trigger 'bust'
-    if do @scores is 21
-      @trigger 'win'
+    if @scores()[0] is 21
+      @trigger 'win', @
+    else if @scores()[0] > 21
+      @trigger 'bust', @
+    do @play
 
   stand: =>
     @trigger 'stand'
+
+  play: ->
+    if @isDealer
+      if @scores()[0] < 17 or @scores()[1] < 17
+        do @hit
+      else
+        do @stand
 
 
   scores: ->
@@ -26,3 +34,13 @@ class window.Hand extends Backbone.Collection
       score + if card.get 'revealed' then card.get 'value' else 0
     , 0
     if hasAce then [score, score + 10] else [score]
+
+  highest: ->
+    if @scores().length is 1
+      @scores()[0]
+    else
+      if @scores()[0] > @scores()[1]
+        @scores()[0]
+      else
+        @scores()[1] 
+
