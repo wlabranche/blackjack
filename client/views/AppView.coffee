@@ -15,7 +15,6 @@ class window.AppView extends Backbone.View
     @model.on 'win', -> console.log('win')
     @model.on 'lose', -> console.log('failure')
     @model.on 'push', -> console.log('push')
-    @model.on 'blackjack', -> console.log 'test'
 
   render: ->
     @$el.children().detach()
